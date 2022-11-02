@@ -1,0 +1,31 @@
+  <entry>
+    <id>https://choco-js-fake-data/package/{name}/{version}</id>
+    <title type="text">{id}</title>
+    <summary type="text">{summary}</summary>
+    <author>
+      <name>{authors}</name>
+    </author>
+    <content type="application/zip" src="{url}" />
+    <summary type="text">{summary}</summary>
+    <m:properties>
+      <d:Version>{version}</d:Version>
+      <d:Title>{title}</d:Title>
+      <d:Description>{description}</d:Description>
+      <d:Tags xml:space="preserve">{_flat_tags}</d:Tags>
+      <d:Copyright>{copyright}</d:Copyright>
+      <d:Dependencies>{_flat_deps}</d:Dependencies>
+      <d:IconUrl>{iconUrl}</d:IconUrl>
+      <d:IsLatestVersion m:type="Edm.Boolean">true</d:IsLatestVersion>
+      <d:IsAbsoluteLatestVersion m:type="Edm.Boolean">true</d:IsAbsoluteLatestVersion>
+      <d:IsPrerelease m:type="Edm.Boolean">false</d:IsPrerelease>
+      <d:LicenseUrl>{licenseUrl}</d:LicenseUrl>
+      <d:RequireLicenseAcceptance m:type="Edm.Boolean">{requireLicenseAcceptance}</d:RequireLicenseAcceptance>
+      <d:ProjectUrl>{projectUrl}</d:ProjectUrl>
+      <d:ReleaseNotes>{releaseNotes}</d:ReleaseNotes>
+      <d:ProjectSourceUrl>{projectSourceUrl}</d:ProjectSourceUrl>
+      <d:PackageSourceUrl>{packageSourceUrl}</d:PackageSourceUrl>
+      <d:DocsUrl>{docsUrl}</d:DocsUrl>
+      <d:MailingListUrl>{mailingListUrl}</d:MailingListUrl>
+      <d:BugTrackerUrl>{bugTrackerUrl}</d:BugTrackerUrl>
+    </m:properties>
+  </entry>
