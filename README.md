@@ -30,6 +30,43 @@ PORT=8000 npx express-chocolatey-server *.nupkg
 ```
 
 
+## Simple App Engine deployment
+
+Start by placing your nupkg files, package.json (see below), and app.yaml (also
+below) in a folder.
+
+package.json:
+```json
+{
+  "dependencies": {
+    "express-chocolatey-server": "^1.0.0"
+  },
+  "scripts": {
+    "start": "express-chocolatey-server *.nupkg"
+  },
+  "engines": {
+    "node": "16.x.x"
+  }
+}
+```
+
+app.yaml:
+```yaml
+runtime: nodejs16
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
+```
+
+Then deploy to App Engine with:
+
+```sh
+gcloud app deploy app.yaml --project=MY_PROJECT_ID_GOES_HERE
+```
+
+
 ## Hosting packages separately
 
 The library provides two methods:
