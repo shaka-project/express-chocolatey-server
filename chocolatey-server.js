@@ -96,9 +96,11 @@ function preprocessPackageMetadata(prefix, packageMetadataList) {
 
     // If we have a buffer for the nupkg file, add a URL that points back to
     // this server to download it.  Applications can also provide an explicit,
-    // off-site URL.
+    // off-site URL.  {EXPRESS_URL_ROOT} will be replaced by the root of the
+    // request right before serving the response, so that responses can contain
+    // absolute URLs without preconfiguring the server with its own address.
     if (entry.nupkgData) {
-      entry.url = `${prefix}download/${entry.id}`;
+      entry.url = `{EXPRESS_URL_ROOT}${prefix}download/${entry.id}`;
     }
   }
 }
@@ -170,6 +172,18 @@ async function configureRoutes(app, prefix, packageMetadataList) {
     return match ? match[1] : null;
   }
 
+  function formatPackages(matchedPackages, req) {
+    const entries = matchedPackages.map((entry) => {
+      return entryTemplate.replace(/{(.*)}/g, (match, key) => entry[key] || '');
+    });
+
+    const url_root = req.protocol + '://' + req.get('host');
+
+    return packagesTemplate
+        .replace(/{entries}\n/g, entries.join(''))
+        .replace(/{EXPRESS_URL_ROOT}/, url_root);
+  }
+
   get(`${prefix}`, (req, res) => {
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(rootAtom);
@@ -205,14 +219,20 @@ async function configureRoutes(app, prefix, packageMetadataList) {
       return;
     }
 
-    const entries = matchedPackages.map((entry) => {
-      return entryTemplate.replace(/{(.*)}/g, (match, key) => entry[key] || '');
-    });
+    res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
+    res.send(formatPackages(matchedPackages, req));
+  });
 
-    const response = packagesTemplate.replace(/{entries}/g, entries.join(''));
+  get(`${prefix}FindPackagesById[\(][\)]`, (req, res) => {
+    // The raw ID from the query string seems to be surrounded by
+    // single-quotes.  Strip single-quotes from the ID.
+    const id = (req.query['id'] || '').replace(/'(.*)'/, '$1');
+    const matchedPackages = packageMetadataList.filter(
+        (entry) => entry.id == id);
+    console.log('Matched package by ID', {id, matchedPackages});
 
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
-    res.send(response);
+    res.send(formatPackages(matchedPackages, req));
   });
 
   get(`${prefix}download/:name`, (req, res) => {

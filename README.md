@@ -67,6 +67,17 @@ gcloud app deploy app.yaml --project=MY_PROJECT_ID_GOES_HERE
 ```
 
 
+## Configuring clients
+
+The client needs to add your server as a new "source".  Each source has a name.
+If you want your source to be named "my-awesome-packages" and your server is
+running at "http://10.0.0.2:8000/", you would configure your choco clients with:
+
+```ps1
+choco source add -n=my-awesome-packages -s=http://10.0.0.2:8000/
+```
+
+
 ## Hosting packages separately
 
 The library provides two methods:
