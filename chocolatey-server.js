@@ -8,6 +8,7 @@ const AdmZip = require('adm-zip');
 const express = require('express');
 const fs = require('fs/promises');
 const xmldoc = require('xmldoc');
+const xmlescape = require('xml-escape');
 
 const CONTENT_TYPE = 'Content-Type';
 const ATOM_MIME_TYPE = 'application/atom+xml; charset=utf-8';
@@ -174,7 +175,7 @@ async function configureRoutes(app, prefix, packageMetadataList) {
 
   function formatPackages(matchedPackages, req) {
     const entries = matchedPackages.map((entry) => {
-      return entryTemplate.replace(/{(.*)}/g, (match, key) => entry[key] || '');
+      return entryTemplate.replace(/{(.*)}/g, (match, key) => xmlescape(entry[key]) || '');
     });
 
     const url_root = req.protocol + '://' + req.get('host');
