@@ -90,7 +90,7 @@ Express routes for a Chocolatey server under the given prefix, and serves
 metadata for the packages listed.
 
 If you want to host the packages separately from the Express server, you will
-want to pre-computing the package metadata, rather than maintaining it by hand.
+want to pre-compute the package metadata, rather than maintaining it by hand.
 
 ```js
 // This is an example script for pre-computing package metadata and hosting
