@@ -45,14 +45,14 @@ package.json:
     "start": "express-chocolatey-server *.nupkg"
   },
   "engines": {
-    "node": "16.x.x"
+    "node": "22.x.x"
   }
 }
 ```
 
 app.yaml:
 ```yaml
-runtime: nodejs16
+runtime: nodejs22
 handlers:
   - url: /.*
     secure: always
