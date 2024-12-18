@@ -21,6 +21,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         with:
           ref: refs/tags/${{ steps.release.outputs.tag_name }}
+          persist-credentials: false
 
       - uses: actions/setup-node@v1
         with:
