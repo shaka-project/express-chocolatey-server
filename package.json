@@ -1,7 +1,7 @@
 {
   "name": "express-chocolatey-server",
   "description": "Simple Chocolatey package server for Express",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/shaka-project/express-chocolatey-server",
   "author": "Google",
   "maintainers": [
