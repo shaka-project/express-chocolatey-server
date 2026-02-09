@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/shaka-project/express-chocolatey-server/compare/v1.0.3...v1.0.4) (2026-02-09)
+
+
+### Bug Fixes
+
+* **ci:** Update release for trusted publishing ([c704bf1](https://github.com/shaka-project/express-chocolatey-server/commit/c704bf1957e89f27628f4f7f682a736f69441dc6))
+
 ## [1.0.3](https://github.com/shaka-project/express-chocolatey-server/compare/v1.0.2...v1.0.3) (2023-10-04)
 
 
