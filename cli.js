@@ -45,3 +45,5 @@ function loggingMiddleware(req, res, next) {
     console.log('To override the port, use the PORT environment variable.');
   });
 })();
+
+module.exports = app;
