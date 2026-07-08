@@ -20,30 +20,28 @@ function loggingMiddleware(req, res, next) {
   next();
 }
 
-(async () => {
-  // Log requests.
-  app.use(loggingMiddleware);
+// Log requests.
+app.use(loggingMiddleware);
 
-  // Load metadata about Chocolatey packages given on the command-line.
-  const packagePaths = process.argv.slice(2);
-  if (!packagePaths.length) {
-    console.log('Please specify paths to Chocolatey packages.');
-    process.exit(1);
-  }
-  const packageMetadataList = await Promise.all(packagePaths.map((path) => {
-    return chocolateyServer.readPackageMetadata(path);
-  }));
+// Load metadata about Chocolatey packages given on the command-line.
+const packagePaths = process.argv.slice(2);
+if (!packagePaths.length) {
+  console.log('Please specify paths to Chocolatey packages.');
+  process.exit(1);
+}
+const packageMetadataList = packagePaths.map((path) => {
+  return chocolateyServer.readPackageMetadata(path);
+});
 
-  console.log('Loaded packages:', packageMetadataList);
+console.log('Loaded packages:', packageMetadataList);
 
-  // Configure Chocolatey server routes at the root.
-  await chocolateyServer.configureRoutes(app, '/', packageMetadataList);
+// Configure Chocolatey server routes at the root.
+chocolateyServer.configureRoutes(app, '/', packageMetadataList);
 
-  // Start the server.
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-    console.log('To override the port, use the PORT environment variable.');
-  });
-})();
+// Start the server.
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+  console.log('To override the port, use the PORT environment variable.');
+});
 
 module.exports = app;

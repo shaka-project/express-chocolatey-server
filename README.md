@@ -85,7 +85,7 @@ The library provides two methods:
 `function readPackageMetadata(path)`: Reads a single nupkg file and returns
 metadata extracted from it.
 
-`async function configureRoutes(app, prefix, packageMetadataList)`: Sets up
+`function configureRoutes(app, prefix, packageMetadataList)`: Sets up
 Express routes for a Chocolatey server under the given prefix, and serves
 metadata for the packages listed.
 
@@ -98,19 +98,17 @@ want to pre-compute the package metadata, rather than maintaining it by hand.
 
 const chocolateyServer = require('express-chocolatey-server');
 
-(async () => {
-  // Load metadata about chocolatey packages given on the command-line.
-  const packagePaths = process.argv.slice(2);
-  const packageMetadataList = await Promise.all(packagePaths.map((path) => {
-    return chocolateyServer.readPackageMetadata(path);
-  }));
-
-  // YOU NEED TO CUSTOMIZE THIS PART.
-  // In each package entry, add a `url` field with the download URL.
-
-  // Save this JSON to a file to be loaded in the server later.
-  console.log(JSON.stringify(packageMetadataList));
+// Load metadata about chocolatey packages given on the command-line.
+const packagePaths = process.argv.slice(2);
+const packageMetadataList = packagePaths.map((path) => {
+  return chocolateyServer.readPackageMetadata(path);
 });
+
+// YOU NEED TO CUSTOMIZE THIS PART.
+// In each package entry, add a `url` field with the download URL.
+
+// Save this JSON to a file to be loaded in the server later.
+console.log(JSON.stringify(packageMetadataList));
 ```
 
 ```js
@@ -123,18 +121,16 @@ const chocolateyServer = require('express-chocolatey-server');
 const app = express();
 const port = process.env['PORT'] || 8000;
 
-(async () => {
-  // Load pre-computed package metadata in JSON.
-  // These entries MUST have a `url` field.
-  const packageMetadataList = require('package-metadata.json');
+// Load pre-computed package metadata in JSON.
+// These entries MUST have a `url` field.
+const packageMetadataList = require('package-metadata.json');
 
-  // Configure chocolatey server routes at the root ('/').
-  // You could also use any other route prefix you like.
-  await chocolateyServer.configureRoutes(app, '/', packageMetadataList);
+// Configure chocolatey server routes at the root ('/').
+// You could also use any other route prefix you like.
+chocolateyServer.configureRoutes(app, '/', packageMetadataList);
 
-  // Start the server.
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-  });
-})();
+// Start the server.
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+});
 ```

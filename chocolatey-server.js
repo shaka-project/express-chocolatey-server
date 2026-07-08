@@ -6,7 +6,7 @@
 
 const AdmZip = require('adm-zip');
 const express = require('express');
-const fs = require('fs/promises');
+const fs = require('fs');
 const xmldoc = require('xmldoc');
 const xmlescape = require('xml-escape');
 
@@ -116,9 +116,8 @@ function preprocessPackageMetadata(prefix, packageMetadataList) {
  * @param {string} prefix A route prefix.  All added routes will begin with
  *     this path.
  * @param {!Array<!PackageMetadata> packageMetadataList
- * @return {!Promise}
  */
-async function configureRoutes(app, prefix, packageMetadataList) {
+function configureRoutes(app, prefix, packageMetadataList) {
   // Route prefixes should start and end with a slash.
   if (!prefix.startsWith('/')) {
     prefix = '/' + prefix;
@@ -129,15 +128,15 @@ async function configureRoutes(app, prefix, packageMetadataList) {
 
   preprocessPackageMetadata(prefix, packageMetadataList);
 
-  const rootAtom = await fs.readFile(
+  const rootAtom = fs.readFileSync(
       `${root}/static/root.atom`, 'utf8');
-  const metadataAtom = await fs.readFile(
+  const metadataAtom = fs.readFileSync(
       `${root}/static/metadata.atom`, 'utf8');
-  const errorAtom = await fs.readFile(
+  const errorAtom = fs.readFileSync(
       `${root}/static/error.atom`, 'utf8');
-  const entryTemplate = await fs.readFile(
+  const entryTemplate = fs.readFileSync(
       `${root}/static/entry-template.atom`, 'utf8');
-  const packagesTemplate = await fs.readFile(
+  const packagesTemplate = fs.readFileSync(
       `${root}/static/packages-template.atom`, 'utf8');
 
   // Wrap app.get in an error handler.
