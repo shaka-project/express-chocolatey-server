@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/shaka-project/express-chocolatey-server/compare/v1.0.4...v1.1.0) (2026-07-08)
+
+
+### Features
+
+* Export the app for Vercel compatibility ([f56d00d](https://github.com/shaka-project/express-chocolatey-server/commit/f56d00d9dc5be23ab51735a233edd3ee2dbdfe88))
+* Load files synchronously for Vercel compatibility ([1149508](https://github.com/shaka-project/express-chocolatey-server/commit/11495080d889f14e4ee542269177370f67d64dfa))
+
 ## [1.0.4](https://github.com/shaka-project/express-chocolatey-server/compare/v1.0.3...v1.0.4) (2026-02-09)
 
 
