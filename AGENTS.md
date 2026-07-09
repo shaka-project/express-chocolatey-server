@@ -42,8 +42,7 @@ There are no automated tests or linter yet (see issues #26 and #27). To verify
 changes manually, you can download a sample package and run the CLI against it:
 
 ```sh
-curl -L -o shaka-lab-browsers.nupkg \
-  https://shaka-lab-chocolatey-dot-shaka-player-demo.appspot.com/download/shaka-lab-browsers
+curl -L -o shaka-lab-browsers.nupkg https://chocolatey.shakalab.rocks/download/shaka-lab-browsers
 node cli.js shaka-lab-browsers.nupkg
 ```
 
