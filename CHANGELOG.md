@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/shaka-project/express-chocolatey-server/compare/v1.1.0...v2.0.0) (2026-07-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Change configureRoutes API to accept an options object
+
+### Features
+
+* Change configureRoutes API to accept an options object ([7ce6685](https://github.com/shaka-project/express-chocolatey-server/commit/7ce6685e6d8043e8f4cd36b848ef05fac1094697))
+
+
+### Bug Fixes
+
+* Fix download URLs when multiple packages are returned ([a3ec542](https://github.com/shaka-project/express-chocolatey-server/commit/a3ec542960d2f65f1587948edf2ce50d9ddc1afa))
+
 ## [1.1.0](https://github.com/shaka-project/express-chocolatey-server/compare/v1.0.4...v1.1.0) (2026-07-08)
 
 
