@@ -181,7 +181,7 @@ function configureRoutes(app, prefix, packageMetadataList) {
 
     return packagesTemplate
         .replace(/{entries}\n/g, entries.join(''))
-        .replace(/{EXPRESS_URL_ROOT}/, url_root);
+        .replace(/{EXPRESS_URL_ROOT}/g, url_root);
   }
 
   get(`${prefix}`, (req, res) => {
