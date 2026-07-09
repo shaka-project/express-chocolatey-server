@@ -5,7 +5,6 @@
  */
 
 const AdmZip = require('adm-zip');
-const express = require('express');
 const fs = require('fs');
 const xmldoc = require('xmldoc');
 const xmlescape = require('xml-escape');
@@ -120,8 +119,8 @@ function preprocessPackageMetadata(prefix, packageMetadataList) {
  *   urlRoot: The root of all absolute URLs, used to construct download links.
  *     Defaults to whatever the request headers show for the origin.
  */
-function configureRoutes(app, packageMetadataList, options={}) {
-  let { prefix, urlRoot } = options;
+function configureRoutes(app, packageMetadataList, options = {}) {
+  let {prefix, urlRoot} = options;
 
   // Route prefixes should start and end with a slash.
   if (!prefix) {
@@ -154,7 +153,7 @@ function configureRoutes(app, packageMetadataList, options={}) {
         await handler(req, res);
         res.end();
       } catch (error) {
-        console.error(error.stack)
+        console.error(error.stack);
         res.status(500).send('Exception!');
       }
     });
@@ -182,7 +181,8 @@ function configureRoutes(app, packageMetadataList, options={}) {
 
   function formatPackages(matchedPackages, req) {
     const entries = matchedPackages.map((entry) => {
-      return entryTemplate.replace(/{(.*)}/g, (match, key) => xmlescape(entry[key]) || '');
+      return entryTemplate.replace(
+          /{(.*)}/g, (match, key) => xmlescape(entry[key]) || '');
     });
 
     // Use a configured root, or fall back to the request protocol and host.
@@ -204,14 +204,13 @@ function configureRoutes(app, packageMetadataList, options={}) {
     res.send(metadataAtom);
   });
 
-  get(String.raw`${prefix}Packages\(Id=':id',Version=':version'\)`, (req, res) => {
+  get(String.raw`${prefix}Packages\(Id=':id',Version=':ver'\)`, (req, res) => {
     const id = req.params.id;
-    const version = req.params.version;
+    const version = req.params.ver;
 
     const matchedPackages = packageMetadataList.filter(
-        (entry) => entry.id == id && entry.version == version);
-
-    console.log(`ID '${id}' version '${version}' matched`, matchedPackages);
+        (entry) => entry.id === id && entry.version === version);
+    console.log('Exact version', {id, version, matchedPackages});
 
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(formatPackages(matchedPackages, req));
@@ -222,10 +221,10 @@ function configureRoutes(app, packageMetadataList, options={}) {
     const name = filterForOnePackage(filter);
     const substring = filterForManyPackages(filter);
 
-    let matchedPackages = [];
+    let matchedPackages;
     if (name) {
       matchedPackages = packageMetadataList.filter(
-          (entry) => entry.id == name);
+          (entry) => entry.id === name);
       console.log('Name filter', {name, matchedPackages});
     } else if (substring) {
       matchedPackages = packageMetadataList.filter((entry) => {
@@ -251,7 +250,7 @@ function configureRoutes(app, packageMetadataList, options={}) {
     // single-quotes.  Strip single-quotes from the ID.
     const id = (req.query['id'] || '').replace(/'(.*)'/, '$1');
     const matchedPackages = packageMetadataList.filter(
-        (entry) => entry.id == id);
+        (entry) => entry.id === id);
     console.log('Matched package by ID', {id, matchedPackages});
 
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
@@ -261,7 +260,7 @@ function configureRoutes(app, packageMetadataList, options={}) {
   get(String.raw`${prefix}download/:name`, (req, res) => {
     const name = req.params.name;
     const matchedPackage = packageMetadataList.find(
-        (entry) => entry.id == name);
+        (entry) => entry.id === name);
     if (matchedPackage) {
       res.set(CONTENT_TYPE, BINARY_MIME_TYPE);
       res.send(matchedPackage.nupkgData);
