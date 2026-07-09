@@ -194,30 +194,30 @@ function configureRoutes(app, packageMetadataList, options={}) {
         .replace(/{EXPRESS_URL_ROOT}/g, thisUrlRoot);
   }
 
-  get(`${prefix}`, (req, res) => {
+  get(String.raw`${prefix}`, (req, res) => {
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(rootAtom);
   });
 
-  get(`${prefix}[\$]metadata`, (req, res) => {
+  get(String.raw`${prefix}\$metadata`, (req, res) => {
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(metadataAtom);
   });
 
-  get(`${prefix}Packages[\(]Id=':id',Version=':version'[\)]`, (req, res) => {
+  get(String.raw`${prefix}Packages\(Id=':id',Version=':version'\)`, (req, res) => {
     const id = req.params.id;
     const version = req.params.version;
 
     const matchedPackages = packageMetadataList.filter(
         (entry) => entry.id == id && entry.version == version);
 
-    console.log('ID/version matched packages', matchedPackages);
+    console.log(`ID '${id}' version '${version}' matched`, matchedPackages);
 
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(formatPackages(matchedPackages, req));
   });
 
-  get(`${prefix}Packages[\(][\)]`, (req, res) => {
+  get(String.raw`${prefix}Packages\(\)`, (req, res) => {
     const filter = req.query['$filter'];
     const name = filterForOnePackage(filter);
     const substring = filterForManyPackages(filter);
@@ -246,7 +246,7 @@ function configureRoutes(app, packageMetadataList, options={}) {
     res.send(formatPackages(matchedPackages, req));
   });
 
-  get(`${prefix}FindPackagesById[\(][\)]`, (req, res) => {
+  get(String.raw`${prefix}FindPackagesById\(\)`, (req, res) => {
     // The raw ID from the query string seems to be surrounded by
     // single-quotes.  Strip single-quotes from the ID.
     const id = (req.query['id'] || '').replace(/'(.*)'/, '$1');
@@ -258,7 +258,7 @@ function configureRoutes(app, packageMetadataList, options={}) {
     res.send(formatPackages(matchedPackages, req));
   });
 
-  get(`${prefix}download/:name`, (req, res) => {
+  get(String.raw`${prefix}download/:name`, (req, res) => {
     const name = req.params.name;
     const matchedPackage = packageMetadataList.find(
         (entry) => entry.id == name);
