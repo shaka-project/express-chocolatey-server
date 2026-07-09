@@ -204,6 +204,19 @@ function configureRoutes(app, packageMetadataList, options={}) {
     res.send(metadataAtom);
   });
 
+  get(`${prefix}Packages[\(]Id=':id',Version=':version'[\)]`, (req, res) => {
+    const id = req.params.id;
+    const version = req.params.version;
+
+    const matchedPackages = packageMetadataList.filter(
+        (entry) => entry.id == id && entry.version == version);
+
+    console.log('ID/version matched packages', matchedPackages);
+
+    res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
+    res.send(formatPackages(matchedPackages, req));
+  });
+
   get(`${prefix}Packages[\(][\)]`, (req, res) => {
     const filter = req.query['$filter'];
     const name = filterForOnePackage(filter);
