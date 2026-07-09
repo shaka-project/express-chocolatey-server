@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/shaka-project/express-chocolatey-server/compare/v2.1.0...v2.1.1) (2026-07-09)
+
+
+### Bug Fixes
+
+* Escape route parens so params parse correctly ([8096010](https://github.com/shaka-project/express-chocolatey-server/commit/8096010c25c493ae1ef89204c4a0eee43c4ce2fa))
+
 ## [2.1.0](https://github.com/shaka-project/express-chocolatey-server/compare/v2.0.0...v2.1.0) (2026-07-09)
 
 
