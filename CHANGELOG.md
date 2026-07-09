@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/shaka-project/express-chocolatey-server/compare/v2.0.0...v2.1.0) (2026-07-09)
+
+
+### Features
+
+* Add missing package ID & version query ([c0e9cb5](https://github.com/shaka-project/express-chocolatey-server/commit/c0e9cb54b4e1fa585f335051a13db31633bd5d6a))
+
 ## [2.0.0](https://github.com/shaka-project/express-chocolatey-server/compare/v1.1.0...v2.0.0) (2026-07-09)
 
 
