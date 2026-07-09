@@ -1,2 +1,5 @@
 node_modules/
 *.nupkg
+
+# ...but keep the sample packages used as test fixtures.
+!test/fixtures/*.nupkg

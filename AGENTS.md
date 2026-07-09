@@ -50,9 +50,15 @@ Most formatting issues can be fixed automatically:
 npm run lint:fix
 ```
 
-Lint runs in CI on every pull request. There are no automated tests yet (see
-issue #27). To verify changes manually, you can download a sample package and
-run the CLI against it:
+Run the tests with Node's built-in test runner:
+
+```sh
+npm test
+```
+
+Both lint and tests run in CI on every pull request. The tests use small sample
+packages committed under `test/fixtures/`. To verify changes manually against a
+live package instead, you can download one and run the CLI against it:
 
 ```sh
 curl -L -o shaka-lab-browsers.nupkg https://chocolatey.shakalab.rocks/download/shaka-lab-browsers

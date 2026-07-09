@@ -113,19 +113,19 @@ function preprocessPackageMetadata(prefix, packageMetadataList) {
  *
  * @param {Express} app An express app to add routes to.
  * @param {!Array<!PackageMetadata> packageMetadataList
- * @param {{ prefix: string, urlRoot?: string }?} options
+ * @param {{ prefix: string, urlRoot?: string, log?: Function }?} options
  *   prefix: A route prefix.  All added routes will begin with this path.
  *     Defaults to '/'.
  *   urlRoot: The root of all absolute URLs, used to construct download links.
  *     Defaults to whatever the request headers show for the origin.
+ *   log: A function used to log per-request diagnostics.  Defaults to
+ *     console.log.  Pass a no-op (() => {}) to silence request logging.
+ *     Unexpected exceptions are always reported to console.error.
  */
 function configureRoutes(app, packageMetadataList, options = {}) {
-  let {prefix, urlRoot} = options;
+  let {prefix = '/', urlRoot, log = console.log} = options;
 
   // Route prefixes should start and end with a slash.
-  if (!prefix) {
-    prefix = '/';
-  }
   if (!prefix.startsWith('/')) {
     prefix = '/' + prefix;
   }
@@ -210,7 +210,7 @@ function configureRoutes(app, packageMetadataList, options = {}) {
 
     const matchedPackages = packageMetadataList.filter(
         (entry) => entry.id === id && entry.version === version);
-    console.log('Exact version', {id, version, matchedPackages});
+    log('Exact version', {id, version, matchedPackages});
 
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(formatPackages(matchedPackages, req));
@@ -225,16 +225,16 @@ function configureRoutes(app, packageMetadataList, options = {}) {
     if (name) {
       matchedPackages = packageMetadataList.filter(
           (entry) => entry.id === name);
-      console.log('Name filter', {name, matchedPackages});
+      log('Name filter', {name, matchedPackages});
     } else if (substring) {
       matchedPackages = packageMetadataList.filter((entry) => {
         return entry.id.includes(substring) ||
                entry.summary.includes(substring) ||
                entry._flat_tags.includes(' ' + substring + ' ');
       });
-      console.log('Search filter', {substring, matchedPackages});
+      log('Search filter', {substring, matchedPackages});
     } else {
-      console.log('Unrecognized filter');
+      log('Unrecognized filter');
       res.status(400);
       res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
       res.send(errorAtom);
@@ -251,7 +251,7 @@ function configureRoutes(app, packageMetadataList, options = {}) {
     const id = (req.query['id'] || '').replace(/'(.*)'/, '$1');
     const matchedPackages = packageMetadataList.filter(
         (entry) => entry.id === id);
-    console.log('Matched package by ID', {id, matchedPackages});
+    log('Matched package by ID', {id, matchedPackages});
 
     res.set(CONTENT_TYPE, ATOM_MIME_TYPE);
     res.send(formatPackages(matchedPackages, req));

@@ -44,7 +44,7 @@ module.exports = defineConfig([
         SwitchCase: 1,
         ignoredNodes: ['ConditionalExpression'],
       }],
-      '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/quotes': ['error', 'single', {avoidEscape: true}],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/object-curly-spacing': ['error', 'never'],
