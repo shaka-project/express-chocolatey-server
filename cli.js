@@ -36,7 +36,7 @@ const packageMetadataList = packagePaths.map((path) => {
 console.log('Loaded packages:', packageMetadataList);
 
 // Configure Chocolatey server routes at the root.
-chocolateyServer.configureRoutes(app, '/', packageMetadataList);
+chocolateyServer.configureRoutes(app, packageMetadataList);
 
 // Start the server.
 app.listen(port, () => {

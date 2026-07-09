@@ -48,9 +48,13 @@ The library provides two methods:
 `function readPackageMetadata(path)`: Reads a single nupkg file and returns
 metadata extracted from it.
 
-`function configureRoutes(app, prefix, packageMetadataList)`: Sets up
-Express routes for a Chocolatey server under the given prefix, and serves
-metadata for the packages listed.
+`function configureRoutes(app, packageMetadataList, options)`: Sets up
+Express routes for a Chocolatey server, and serves metadata for the packages
+listed.  Options can include:
+
+ - prefix: A string with a prefix to apply to all package routes (default '/')
+ - urlRoot: An explicit URL root for constructing absolute URLs (default to the
+   origin from request headers)
 
 If you want to host the packages separately from the Express server, you will
 want to pre-compute the package metadata, rather than maintaining it by hand.
@@ -90,7 +94,9 @@ const packageMetadataList = require('package-metadata.json');
 
 // Configure chocolatey server routes at the root ('/').
 // You could also use any other route prefix you like.
-chocolateyServer.configureRoutes(app, '/', packageMetadataList);
+chocolateyServer.configureRoutes(app, packageMetadataList, {
+  prefix: '/',
+});
 
 // Start the server.
 app.listen(port, () => {

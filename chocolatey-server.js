@@ -113,12 +113,20 @@ function preprocessPackageMetadata(prefix, packageMetadataList) {
  * that are required to satisfy the Chocolatey client.
  *
  * @param {Express} app An express app to add routes to.
- * @param {string} prefix A route prefix.  All added routes will begin with
- *     this path.
  * @param {!Array<!PackageMetadata> packageMetadataList
+ * @param {{ prefix: string, urlRoot?: string }?} options
+ *   prefix: A route prefix.  All added routes will begin with this path.
+ *     Defaults to '/'.
+ *   urlRoot: The root of all absolute URLs, used to construct download links.
+ *     Defaults to whatever the request headers show for the origin.
  */
-function configureRoutes(app, prefix, packageMetadataList) {
+function configureRoutes(app, packageMetadataList, options={}) {
+  let { prefix, urlRoot } = options;
+
   // Route prefixes should start and end with a slash.
+  if (!prefix) {
+    prefix = '/';
+  }
   if (!prefix.startsWith('/')) {
     prefix = '/' + prefix;
   }
@@ -177,11 +185,13 @@ function configureRoutes(app, prefix, packageMetadataList) {
       return entryTemplate.replace(/{(.*)}/g, (match, key) => xmlescape(entry[key]) || '');
     });
 
-    const url_root = req.protocol + '://' + req.get('host');
+    // Use a configured root, or fall back to the request protocol and host.
+    // The request protocol and host may not be accurate for all hosting setups.
+    const thisUrlRoot = urlRoot || (req.protocol + '://' + req.get('host'));
 
     return packagesTemplate
         .replace(/{entries}\n/g, entries.join(''))
-        .replace(/{EXPRESS_URL_ROOT}/g, url_root);
+        .replace(/{EXPRESS_URL_ROOT}/g, thisUrlRoot);
   }
 
   get(`${prefix}`, (req, res) => {
