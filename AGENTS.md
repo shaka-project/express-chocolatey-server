@@ -38,8 +38,21 @@ Install dependencies:
 npm install
 ```
 
-There are no automated tests or linter yet (see issues #26 and #27). To verify
-changes manually, you can download a sample package and run the CLI against it:
+Lint the code with ESLint:
+
+```sh
+npm run lint
+```
+
+Most formatting issues can be fixed automatically:
+
+```sh
+npm run lint:fix
+```
+
+Lint runs in CI on every pull request. There are no automated tests yet (see
+issue #27). To verify changes manually, you can download a sample package and
+run the CLI against it:
 
 ```sh
 curl -L -o shaka-lab-browsers.nupkg https://chocolatey.shakalab.rocks/download/shaka-lab-browsers

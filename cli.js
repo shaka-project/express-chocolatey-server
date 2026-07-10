@@ -7,7 +7,6 @@
  */
 
 const express = require('express');
-const fs = require('fs');
 
 const chocolateyServer = require('./chocolatey-server.js');
 
@@ -40,7 +39,7 @@ chocolateyServer.configureRoutes(app, packageMetadataList);
 
 // Start the server.
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`)
+  console.log(`Listening on port ${port}`);
   console.log('To override the port, use the PORT environment variable.');
 });
 
